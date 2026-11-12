@@ -1,0 +1,62 @@
+@startuml
+class Etudiant {
+  - matricule : String
+  - nom : String
+  - prenom : String
+  - dateNaissance : Date
+  - telephone : String
+  - email : String
+  + estInscrit(annee : AnneeAcademique) : bool
+}
+
+class Filiere {
+  - code : String
+  - libelle : String
+}
+
+class Niveau {
+  - code : String
+  - libelle : String
+}
+
+class AnneeAcademique {
+  - libelle : String
+  - dateDebut : Date
+  - dateFin : Date
+}
+
+class Scolarite {
+  - montantTotal : double
+  - montantPaye : double
+  - datePaiement : Date
+  + calculerReste() : double
+  + estSoldee() : boolean
+}
+
+class Inscription {
+  - numero : int
+  - dateInscription : Date
+  - statut : String
+  + valider() : void
+  + genererAttestation() : String
+}
+
+class GestionInscriptions {
+  - inscriptions : List<Inscription>
+  + enregistrer(i : Inscription) : boolean
+  + verifierDejaInscrit(matricule : String, a : AnneeAcademique) : boolean
+  + rechercherParMatricule(matricule : String) : Etudiant
+  + listerInscrits() : List<Etudiant>
+  + listerParAnnee(a : AnneeAcademique) : List<Inscription>
+  + sauvegarder(chemin : String) : void
+  + charger(chemin : String) : void
+}
+
+Etudiant "1" -- "0..*" Inscription : effectue
+Inscription "*" -- "1" Filiere : concerne
+Inscription "*" -- "1" Niveau : pour
+Inscription "*" -- "1" AnneeAcademique : durant
+Inscription "1" *-- "1" Scolarite : comprend
+Filiere "1" -- "1..*" Niveau : propose
+GestionInscriptions o-- "*" Inscription
+@enduml

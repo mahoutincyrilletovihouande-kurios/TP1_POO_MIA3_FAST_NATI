@@ -1,0 +1,30 @@
+@startuml
+actor "Agent de scolarité" as Agent
+participant "Interface" as UI
+participant "GestionInscriptions" as G
+participant "Etudiant" as E
+participant "Inscription" as I
+participant "Scolarite" as S
+participant "Fichier" as F
+
+Agent -> UI : saisir matricule, filière, niveau, année
+UI -> G : verifierDejaInscrit(matricule, annee)
+G --> UI : résultat
+
+alt déjà inscrit
+  UI --> Agent : message « Étudiant déjà inscrit »
+else non inscrit
+  UI -> G : enregistrer(données)
+  G -> E : créer / récupérer l'étudiant
+  G -> I : new Inscription(étudiant, filière, niveau, année)
+  Agent -> UI : saisir le paiement
+  UI -> G : enregistrerPaiement(montant)
+  G -> S : new Scolarite(montantTotal, montantPaye)
+  S --> G : reste à payer
+  G -> I : valider()
+  G -> F : sauvegarder()
+  F --> G : OK
+  G --> UI : inscription confirmée
+  UI --> Agent : afficher confirmation (+ option attestation)
+end
+@enduml

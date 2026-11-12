@@ -1,0 +1,30 @@
+@startuml
+left to right direction
+actor "Agent de scolarité" as Agent
+actor "Étudiant" as Etu
+
+rectangle "Gestion des inscriptions" {
+  usecase "Enregistrer une inscription" as UC1
+  usecase "Vérifier si l'étudiant\nest déjà inscrit" as UC2
+  usecase "Associer étudiant\nà filière et niveau" as UC3
+  usecase "Enregistrer le paiement\nde la scolarité" as UC4
+  usecase "Consulter la liste\ndes inscrits" as UC5
+  usecase "Rechercher un étudiant\npar matricule" as UC6
+  usecase "Afficher les inscriptions\npar année académique" as UC7
+  usecase "Générer une attestation\nd'inscription" as UC8
+  usecase "Sauvegarder les données\n(fichiers)" as UC9
+}
+
+Agent --> UC1
+Agent --> UC5
+Agent --> UC6
+Agent --> UC7
+Agent --> UC8
+Etu --> UC8
+
+UC1 ..> UC2 : <<include>>
+UC1 ..> UC3 : <<include>>
+UC1 ..> UC4 : <<include>>
+UC8 ..> UC1 : <<extend>>
+UC9 ..> UC1 : <<extend>>
+@enduml
